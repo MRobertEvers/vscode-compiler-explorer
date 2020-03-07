@@ -16,11 +16,11 @@ function tokenize(sourceCode: string, labels?: Array<GodboltLabel[]>) : Array<To
     let sourceLines = sourceCode.split('\n');
     for( let line of sourceLines ) {
 
-        if( !line.startsWith(' ') && line.indexOf(':') > 0 ) {
+        if( !line.startsWith(' ') && line.lastIndexOf(':') > 0 ) {
             // Label
             res.push({
                 start: lineStart,
-                stop: lineStart + line.indexOf(':') + 1,
+                stop: lineStart + line.lastIndexOf(':') + 1,
                 type: 'Label'
             });
         }
@@ -156,7 +156,7 @@ export function getSyntaxHighlightDecorations(editor: vscode.TextEditor, content
         if( typedBuckets[typename] ) {
             ranges = typedBuckets[typename];
         }
-        
+
         res.push({
             type: typeMap[typename],
             ranges: ranges
