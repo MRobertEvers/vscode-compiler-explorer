@@ -84,7 +84,7 @@ export default class CompilerExplorer {
     }
 
     logOutput(json: CompilerExplorerResponse) {
-        logger.debug(JSON.stringify(json, null, 2));
+        // logger.debug(JSON.stringify(json, null, 2));
         let compilerOutput = [];
         if( json.stdout ) {
             compilerOutput = compilerOutput.concat(json.stdout);
@@ -96,6 +96,7 @@ export default class CompilerExplorer {
     }
 
     async compile(language: string, source: string) {
+        logger.debug("Fetching Compilation");
         const apiHost = getCompilerExplorerHost();
         const compiler = getCompilerCode();
         const options = this.getCompileAPIOptions(this.getCompileAPIUserOptions());

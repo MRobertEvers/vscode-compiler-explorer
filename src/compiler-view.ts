@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getCompilerExplorerHost } from './config';
+import * as logger from './logger';
 import CompilerExplorer from './compiler-explorer';
 import CompilerExplorerSourceProvider from './compiler-source-provider';
 import { GodboltLabel } from './compiler-explorer-types';
@@ -74,9 +74,7 @@ export default class CompilerView {
         const result: vscode.TextEditor = await vscode.window.showTextDocument(newDocument, vscode.ViewColumn.Beside);
         this.setCurrentMnemonicsEditor(result);
 
-        await vscode.commands.executeCommand('workbench.action.navigateBack'); 
-
-        this.syntaxHighlightMnemonics();
+        await vscode.commands.executeCommand('workbench.action.navigateBack');
     }
 
     private async updateCompilerExplorer() {
@@ -88,8 +86,8 @@ export default class CompilerView {
 
         // If the event is coming from the EditorChanged event, we need to update the editor.
         this.setCurrentSourceEditor(vscode.window.activeTextEditor);
-
-        await this.compilerSourceProvider.onDidChangeEmitter.fire(this.currentMnemonicsEditor.document.uri);
+        
+        this.compilerSourceProvider.onDidChangeEmitter.fire(this.currentMnemonicsEditor.document.uri);
     }
 
     private setCurrentMnemonicsEditor(editor: vscode.TextEditor) {
@@ -132,6 +130,7 @@ export default class CompilerView {
     }
 
     private syntaxHighlightMnemonics() : void {
+        logger.debug("Syntax Highlighting.");
         const decoratedRanges: Array<DecorationSpecification> = this.getBaseMnemonicsDecorations();
 
         for( let decoration of decoratedRanges ) {
