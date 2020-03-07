@@ -2,11 +2,11 @@
     "name": "compiler-explorer",
     "displayName": "Compiler Explorer",
     "description": "Use Compiler Explorer in VSCode",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "publisher": "Matthew Evers",
     "license": "MIT",
     "homepage": "https://github.com/MRobertEvers/vscode-compiler-explorer.git",
-    "icon": "images/CE.png",
+    "icon": "images/Compiler-Explorer-VSCode.png",
     "galleryBanner": {
         "color": "#1F1F1F",
         "theme": "dark"
@@ -68,6 +68,12 @@
                     "default": false,
                     "description": "Include debug printouts.",
                     "scope": "window"
+                },
+                "compiler-explorer.include": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Additional includes if running compiler explorer locally.",
+                    "scope": "window"
                 }
             }
         },
@@ -76,6 +82,11 @@
                 "title": "Open Compiler Explorer",
                 "category": "compiler-explorer",
                 "command": "compiler-explorer.open"
+            },
+            {
+                "title": "Open Compiler Explorer",
+                "category": "compiler-explorer",
+                "command": "compiler-explorer.updateDisassembly"
             }
         ]
     },
