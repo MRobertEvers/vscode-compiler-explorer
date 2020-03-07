@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import * as logger from './logger'
 import CompilerExplorer from './compiler-explorer';
-import { getCompilerOptions, getCompilerCode } from './config';
 
 
 export default class CompilerExplorerSourceProvider implements vscode.TextDocumentContentProvider {
@@ -21,7 +20,7 @@ export default class CompilerExplorerSourceProvider implements vscode.TextDocume
     provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken) : vscode.ProviderResult<string> {
         const sourceCode = vscode.window.activeTextEditor.document.getText();
         const lang = vscode.window.activeTextEditor.document.languageId;
-        return this.compilerExplorer.compile(getCompilerCode(), getCompilerOptions(), lang, sourceCode);
+        return this.compilerExplorer.compile(lang, sourceCode);
     }
 };
 

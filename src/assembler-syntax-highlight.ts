@@ -150,10 +150,16 @@ export function getSyntaxHighlightDecorations(editor: vscode.TextEditor, content
         );
     }
 
-    for( let typename of Object.keys(typedBuckets) ) {
+    // We must have an entry for each type or old ranges of that type will persist.
+    for( let typename of Object.keys(typeMap) ) {
+        let ranges = [];
+        if( typedBuckets[typename] ) {
+            ranges = typedBuckets[typename];
+        }
+        
         res.push({
             type: typeMap[typename],
-            ranges: typedBuckets[typename]
+            ranges: ranges
         });
     }
 

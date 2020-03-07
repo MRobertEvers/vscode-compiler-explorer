@@ -1,14 +1,10 @@
 import fetch from 'node-fetch';
 import * as logger from './logger'
 import { CompilerExplorerResponse, GodboltLabel } from './compiler-explorer-types';
+import { getCompilerExplorerHost, getCompilerOptions, getCompilerCode, getCompilerIncludes } from './config';
 
 export default class CompilerExplorer {
     currentData: CompilerExplorerResponse | null;
-    apiHost: string;
-
-    constructor(apiHost: string) {
-        this.apiHost = apiHost;
-    }
 
     // The godbolt compiler provides additional info about the location of labels.
     getAdditionalLabelInfo() : Array<GodboltLabel[]> {
@@ -55,6 +51,15 @@ export default class CompilerExplorer {
         }
     }
 
+    getCompileAPIUserOptions() : string {
+        let options = [getCompilerOptions()];
+        let additionalIncludes = getCompilerIncludes().map((inc: string) => { 
+            let sanitized = inc.replace(/\\/g, '/');
+            return `-I ${sanitized}`; 
+        });
+        return options.concat(additionalIncludes).join(' ');
+    }
+
     getCompileAPIOptions(userOptions: string) : any {
         return {
             userArguments: userOptions,
@@ -78,8 +83,24 @@ export default class CompilerExplorer {
         };
     }
 
-    async compile(compiler: string, options: string, language: string, source: string) {
-        let fetchPromise = fetch(`${this.apiHost}/api/compiler/${compiler}/compile`, {
+    logOutput(json: CompilerExplorerResponse) {
+        logger.debug(JSON.stringify(json, null, 2));
+        let compilerOutput = [];
+        if( json.stdout ) {
+            compilerOutput = compilerOutput.concat(json.stdout);
+        }
+        if( json.stderr ) {
+            compilerOutput = compilerOutput.concat(json.stderr);
+        }
+        logger.info(compilerOutput.map(l => l.text).join('\n'));
+    }
+
+    async compile(language: string, source: string) {
+        const apiHost = getCompilerExplorerHost();
+        const compiler = getCompilerCode();
+        const options = this.getCompileAPIOptions(this.getCompileAPIUserOptions());
+
+        let fetchPromise = fetch(`${apiHost}/api/compiler/${compiler}/compile`, {
             method: 'POST',
             compress: true,
             headers: {
@@ -89,7 +110,7 @@ export default class CompilerExplorer {
             body: JSON.stringify({
                 source: source,
                 lang: language,
-                options: this.getCompileAPIOptions(options),
+                options: options,
                 allowStoreCodeDebug: true,
                 compiler: compiler
             })
@@ -99,50 +120,11 @@ export default class CompilerExplorer {
         })
         .then((json: CompilerExplorerResponse) => { 
             this.currentData = json;
-            logger.info(JSON.stringify(json, null, 2));
+            this.logOutput(json);
             return json.asm.map(a => a.text).join('\n') 
         });
 
         return fetchPromise;
     }
-    
-    // provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<string> {
-    //     if( uri.path.endsWith('Output') ) {
-    //         if( !this.currentData ) {
-    //             return;
-    //         }
-    //         let stdoutLines = this.currentData.stdout.map(v => v.text);
-    //         let stderrLines = this.currentData.stderr.map(v => v.text);
-    //         return stdoutLines.concat(stderrLines).join('\n');
-    //     }
-
-    //     const content = vscode.window.activeTextEditor.document.getText();
-    //     const lang = vscode.window.activeTextEditor.document.languageId;
-    //     let fetchPromise = fetch('http://localhost:10240/api/compiler/iar/compile', {
-    //         method: 'POST',
-    //         compress: true,
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             source: content,
-    //             lang: lang,
-    //             options: this.getCompileAPIOptions(),
-    //             allowStoreCodeDebug: true,
-    //             compiler: "iar"
-    //         })
-    //     })
-    //     .then(res => { 
-    //         return res.json(); 
-    //     })
-    //     .then((json: CompilerExplorerResponse) => { 
-    //         this.currentData = json;
-    //         logger.info(JSON.stringify(json, null, 2));
-    //         return json.asm.map(a => a.text).join('\n') 
-    //     });
-
-    //     return fetchPromise;
-    // }
 };
 

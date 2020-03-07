@@ -23,17 +23,17 @@ export default class CompilerView {
 
     private currentMnemonicsDecorations: Array<DecorationSpecification> = [];
     private currentLabels: Array<GodboltLabel[]> = [];
-    private compilerExplorer: CompilerExplorer = new CompilerExplorer(getCompilerExplorerHost());
+    private compilerExplorer: CompilerExplorer = new CompilerExplorer();
     private compilerSourceProvider: CompilerExplorerSourceProvider = new CompilerExplorerSourceProvider(this.compilerExplorer);
 
     activate(context: vscode.ExtensionContext) {
         vscode.window.onDidChangeActiveTextEditor(editor => {
-            // showCompilerExplorer(editor);
+            vscode.commands.executeCommand('compiler-explorer.updateDisassembly');
         });
 
-        vscode.window.onDidChangeTextEditorVisibleRanges(editor => {
-            // Scroll in assembly.
-        });
+        // vscode.window.onDidChangeTextEditorVisibleRanges(editor => {
+        //     // Scroll in assembly.
+        // });
     
         vscode.window.onDidChangeTextEditorSelection((event: vscode.TextEditorSelectionChangeEvent) => {
             if( !this.currentSourceEditor || event.textEditor.document !== this.currentSourceEditor.document ) {
@@ -85,6 +85,10 @@ export default class CompilerView {
         }
         this.currentMnemonicsDecorations = [];
         this.currentLabels = [];
+
+        // If the event is coming from the EditorChanged event, we need to update the editor.
+        this.setCurrentSourceEditor(vscode.window.activeTextEditor);
+
         await this.compilerSourceProvider.onDidChangeEmitter.fire(this.currentMnemonicsEditor.document.uri);
     }
 
