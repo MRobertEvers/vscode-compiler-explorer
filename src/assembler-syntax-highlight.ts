@@ -49,22 +49,22 @@ function tokenize(sourceCode: string, labels?: Array<GodboltLabel[]>) : Array<To
                 type: argType
             });
             
-            // If one of the args is a label, override
-            if( labels && labels.length > currentLineIndex ) {
-                const lineLabels = labels[currentLineIndex];
+            // // If one of the args is a label, override
+            // if( labels && labels.length > currentLineIndex ) {
+            //     const lineLabels = labels[currentLineIndex];
 
-                if( !lineLabels ) {
-                    continue;
-                }
+            //     if( !lineLabels ) {
+            //         continue;
+            //     }
 
-                for( let labelInfo of lineLabels ) {
-                    res.push({
-                        start: lineStart + labelInfo.range.startCol,
-                        stop: lineStart + labelInfo.range.endCol,
-                        type: "LabelArg"
-                    });
-                }
-            }
+            //     for( let labelInfo of lineLabels ) {
+            //         res.push({
+            //             start: lineStart + labelInfo.range.startCol,
+            //             stop: lineStart + labelInfo.range.endCol,
+            //             type: "LabelArg"
+            //         });
+            //     }
+            // }
             
             if( splitLine.length > 2) {
                 token = splitLine.splice(2).join(' ');
