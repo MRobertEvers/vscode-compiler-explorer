@@ -39,8 +39,7 @@ E.g. On your local instance of compiler explorer, open the config `compiler-expl
 
 ## Current Bugs
 
-Lots. Has issues when editing multiple files; you must close the compiler explorer, then reopen it for a new file.
-Syntax highlighting is iffy.
+Lots. Has issues when editing multiple files; Syntax highlight is bugged when switching files.
 
 ## Todo
 

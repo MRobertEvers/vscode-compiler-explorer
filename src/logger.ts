@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as config from './config';
 
 let output: vscode.OutputChannel = vscode.window.createOutputChannel('Compiler Explorer');
 
@@ -7,7 +8,7 @@ export function info(msg: string) {
 };
 
 export function debug(msg: string) {
-    if (vscode.workspace.getConfiguration('compiler-explorer').get('debug', false)) {
+    if( config.getIsDebug() ) {
         const message: string = 'Debug: ' + msg;
         output.appendLine(message);
     }

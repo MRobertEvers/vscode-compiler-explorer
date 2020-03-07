@@ -24,6 +24,12 @@ export function getCompilerOptions() : string {
     return config.get<string>('options');
 }
 
+export function getIsDebug() : boolean {
+    const config: vscode.WorkspaceConfiguration = getConfig();
+    return config.get<boolean>('debug');
+}
+
+
 export function getCompilerIncludes() : string[] {
     const config: vscode.WorkspaceConfiguration = getConfig();
     let includes: string[] = config.get<string[]>('include');

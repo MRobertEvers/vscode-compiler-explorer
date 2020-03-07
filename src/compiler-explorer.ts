@@ -92,6 +92,9 @@ export default class CompilerExplorer {
         if( json.stderr ) {
             compilerOutput = compilerOutput.concat(json.stderr);
         }
+        if( json.compilationOptions ) {
+            logger.debug(json.compilationOptions.join(' '))
+        }
         logger.info(compilerOutput.map(l => l.text).join('\n'));
     }
 
