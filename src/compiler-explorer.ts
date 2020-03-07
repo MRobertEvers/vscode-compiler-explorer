@@ -55,7 +55,7 @@ export default class CompilerExplorer {
         let options = [getCompilerOptions()];
         let additionalIncludes = getCompilerIncludes().map((inc: string) => { 
             let sanitized = inc.replace(/\\/g, '/');
-            return `-I ${sanitized}`; 
+            return `-I "${sanitized}"`; 
         });
         return options.concat(additionalIncludes).join(' ');
     }

@@ -104,7 +104,7 @@ export default class CompilerView {
         }
         
         const lang: string = vscode.window.activeTextEditor.document.languageId;
-        if( lang !== 'c' && lang !== 'c++' ) {
+        if( lang !== 'c' && lang !== 'c++' && lang !== 'cpp' ) {
             return false;
         }
 
