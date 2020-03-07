@@ -1,0 +1,102 @@
+{
+    "name": "compiler-explorer",
+    "displayName": "Compiler Explorer",
+    "description": "Use Compiler Explorer in VSCode",
+    "version": "1.0.0",
+    "publisher": "Matthew Evers",
+    "license": "MIT",
+    "homepage": "https://github.com/MRobertEvers/vscode-compiler-explorer.git",
+    "icon": "images/CE.png",
+    "galleryBanner": {
+        "color": "#1F1F1F",
+        "theme": "dark"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MRobertEvers/vscode-compiler-explorer.git"
+    },
+    "bugs": {
+        "url": "https://github.com/MRobertEvers/vscode-compiler-explorer/issues"
+    },
+    "engines": {
+        "vscode": "^1.42.0"
+    },
+    "categories": [
+        "Debuggers"
+    ],
+    "keywords": [
+        "compiler-explorer",
+        "compiler"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./build/vscode-compiler-explorer",
+    "contributes": {
+        "configuration": {
+            "title": "Compiler Explorer Configuration",
+            "properties": {
+                "compiler-explorer.url": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "https://godbolt.org",
+                    "description": "URL of compiler explorer.",
+                    "scope": "window"
+                },
+                "compiler-explorer.compiler": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "carmg820",
+                    "description": "Compiler code to use.",
+                    "scope": "window"
+                },
+                "compiler-explorer.options": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "-O3",
+                    "description": "Compiler options.",
+                    "scope": "window"
+                },
+                "compiler-explorer.debug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include debug printouts.",
+                    "scope": "window"
+                }
+            }
+        },
+        "commands": [
+            {
+                "title": "Open Compiler Explorer",
+                "category": "compiler-explorer",
+                "command": "compiler-explorer.open"
+            }
+        ]
+    },
+    "scripts": {
+        "build": "webpack --mode none",
+        "watch": "webpack --mode none --watch"
+    },
+    "dependencies": {
+        "node": "^12.16.1",
+        "node-fetch": "^2.6.0"
+    },
+    "devDependencies": {
+        "@types/node": "^12.12.14",
+        "@types/node-fetch": "^2.5.5",
+        "@types/vscode": "^1.42.0",
+        "@types/webpack": "^4.41.7",
+        "ts-loader": "^6.2.1",
+        "ts-node": "^8.6.2",
+        "typescript": "^3.8.3",
+        "vsce": "^1.74.0",
+        "webpack": "^4.41.6",
+        "webpack-cli": "^3.3.11"
+    }
+}
