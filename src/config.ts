@@ -21,7 +21,13 @@ export function getCompilerCode() : string {
 
 export function getCompilerOptions() : string {
     const config: vscode.WorkspaceConfiguration = getConfig();
-    return config.get<string>('options');
+    let res = config.get<string | string[]>('options');
+    if( Array.isArray(res) ) {
+        return res.join(' ');
+    }
+    else {
+        return res;
+    }
 }
 
 export function getIsDebug() : boolean {

@@ -38,28 +38,24 @@
             "properties": {
                 "compiler-explorer.url": {
                     "type": [
-                        "string",
-                        "null"
+                        "string"
                     ],
                     "default": "https://godbolt.org",
                     "description": "URL of compiler explorer.",
                     "scope": "window"
                 },
                 "compiler-explorer.compiler": {
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "default": "carmg820",
-                    "description": "Compiler code to use.",
+                    "type": "string",
+                    "default": "g92",
+                    "description": "Compiler code to use. See GET /api/compilers",
                     "scope": "window"
                 },
                 "compiler-explorer.options": {
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "default": "-O3",
+                    "type": ["array", "string"],
+                    "items": {
+                      "type": "string"
+                    },
+                    "default": ["-O3"],
                     "description": "Compiler options.",
                     "scope": "window"
                 },
@@ -71,6 +67,9 @@
                 },
                 "compiler-explorer.include": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [],
                     "description": "Additional includes if running compiler explorer locally.",
                     "scope": "window"
