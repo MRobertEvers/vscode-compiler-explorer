@@ -11,6 +11,14 @@ export default class CompilerExplorer {
         return this.currentData.asm.map(line => line.labels);
     }
 
+    getSourceLineRange(disassemblyLineNumber: number) : number | null {
+        if( !this.currentData ) {
+            return null;
+        }
+
+        return this.currentData.asm[disassemblyLineNumber].source.line - 1;
+    }
+
     getDisassembledLineRange(sourceLineNumber: number) : Array<number> | null {
         if( !this.currentData ) {
             return null;
@@ -125,7 +133,7 @@ export default class CompilerExplorer {
         .then((json: CompilerExplorerResponse) => { 
             this.currentData = json;
             this.logOutput(json);
-            return json.asm.map(a => a.text).join('\n') 
+            return json.asm.map(a => a.text).join('\n'); 
         });
 
         return fetchPromise;

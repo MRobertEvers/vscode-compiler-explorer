@@ -49,22 +49,22 @@ function tokenize(sourceCode: string, labels?: Array<GodboltLabel[]>) : Array<To
                 type: argType
             });
             
-            // // If one of the args is a label, override
-            // if( labels && labels.length > currentLineIndex ) {
-            //     const lineLabels = labels[currentLineIndex];
+            // If one of the args is a label, override
+            if( labels && labels.length > currentLineIndex ) {
+                const lineLabels = labels[currentLineIndex];
 
-            //     if( !lineLabels ) {
-            //         continue;
-            //     }
+                if( !lineLabels ) {
+                    continue;
+                }
 
-            //     for( let labelInfo of lineLabels ) {
-            //         res.push({
-            //             start: lineStart + labelInfo.range.startCol,
-            //             stop: lineStart + labelInfo.range.endCol,
-            //             type: "LabelArg"
-            //         });
-            //     }
-            // }
+                for( let labelInfo of lineLabels ) {
+                    res.push({
+                        start: lineStart + labelInfo.range.startCol,
+                        stop: lineStart + labelInfo.range.endCol,
+                        type: "LabelArg"
+                    });
+                }
+            }
             
             if( splitLine.length > 2) {
                 token = splitLine.splice(2).join(' ');
@@ -112,7 +112,10 @@ const typeMap = {
     'LabelArg': vscode.window.createTextEditorDecorationType({
         ...tmp,
         color: '#2a8081',
-        fontStyle: 'italic'
+        fontStyle: 'italic',
+        // borderWidth: '1px',
+        // borderColor: 'red',
+        // borderStyle: 'solid'
     }),
     'Comment': vscode.window.createTextEditorDecorationType({
         ...tmp,
@@ -132,6 +135,10 @@ const typeMap = {
 export interface DecorationSpecification {
     type: vscode.TextEditorDecorationType;
     ranges: Array<vscode.DecorationOptions>;
+}
+
+export function getSyntaxHighlightDecorationTypes() : any {
+    return typeMap;
 }
 
 export function getSyntaxHighlightDecorations(editor: vscode.TextEditor, content: string, labels?: Array<GodboltLabel[]>) : Array<DecorationSpecification> {

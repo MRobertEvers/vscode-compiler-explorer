@@ -31,7 +31,7 @@ Once your settings are specified, you can open the compiler explorer with the co
 
 ## Compiler Selection
 
-The Compiler Explorer assigns a unique code to each compiler it offers. You can find a list of the compilers offered by Compiler Explorer, with a list of human readable names at (simple `GET` request) `<compiler-explorer.url>/api/compilers`. E.g. `https://godbolt.org/api/compilers` provides a list that starts like,
+The Compiler Explorer assigns a unique code to each compiler it offers. This is the compiler code that you need to put in the config settings. You can find a list of the compilers offered by Compiler Explorer, with a list of human readable names at (simple `GET` request) `<compiler-explorer.url>/api/compilers`. E.g. `https://godbolt.org/api/compilers` provides a list that starts like,
 
 ```
 Compiler Name             | Name
