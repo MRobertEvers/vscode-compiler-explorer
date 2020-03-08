@@ -35,36 +35,38 @@ function tokenize(sourceCode: string, labels?: Array<GodboltLabel[]>) : Array<To
                 type: 'Mnemonic'
             });
             
-            let argType = 'Args';
-            token = splitLine[1];
-            start = lineStart + line.indexOf(token, end - lineStart);
-            end = start + token.length;
-            if( token.indexOf("\"") >= 0 ) {
-                argType = 'String';
+            if( splitLine.length > 1 ) {
+                
+                let argType = 'Args';
+                token = splitLine[1];
+                start = lineStart + line.indexOf(token, end - lineStart);
+                end = start + token.length;
+                if( token.indexOf("\"") >= 0 ) {
+                    argType = 'String';
+                }
+    
+                res.push({
+                    start: start,
+                    stop: end,
+                    type: argType
+                });
+                
+                // If one of the args is a label, override
+                if( labels && labels.length > currentLineIndex ) {
+                    const lineLabels = labels[currentLineIndex];
+    
+                    if( lineLabels ) {
+                        for( let labelInfo of lineLabels ) {
+                            res.push({
+                                start: lineStart + labelInfo.range.startCol,
+                                stop: lineStart + labelInfo.range.endCol,
+                                type: "LabelArg"
+                            });
+                        }
+                    }
+                }
             }
 
-            res.push({
-                start: start,
-                stop: end,
-                type: argType
-            });
-            
-            // If one of the args is a label, override
-            if( labels && labels.length > currentLineIndex ) {
-                const lineLabels = labels[currentLineIndex];
-
-                if( !lineLabels ) {
-                    continue;
-                }
-
-                for( let labelInfo of lineLabels ) {
-                    res.push({
-                        start: lineStart + labelInfo.range.startCol,
-                        stop: lineStart + labelInfo.range.endCol,
-                        type: "LabelArg"
-                    });
-                }
-            }
             
             if( splitLine.length > 2) {
                 token = splitLine.splice(2).join(' ');

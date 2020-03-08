@@ -127,11 +127,11 @@ export default class CompilerView {
     }
 
     private getBaseMnemonicsDecorations() : Array<DecorationSpecification> {
-        //if( this.currentMnemonicsDecorations.length == 0 ) {
+        if( this.currentMnemonicsDecorations.length == 0 ) {
             this.currentMnemonicsDecorations = getSyntaxHighlightDecorations(
                 this.currentMnemonicsEditor, this.currentMnemonicsEditor.document.getText(), this.getCurrentLabels()
             );
-        //}
+        }
 
         return this.currentMnemonicsDecorations.slice(0);
     }

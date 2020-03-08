@@ -135,7 +135,13 @@ export default class CompilerExplorer {
         .then((json: CompilerExplorerResponse) => { 
             this.currentData = json;
             this.logOutput(json);
-            return json.asm.map(a => a.text).join('\n'); 
+
+            if( !json.asm || (json.asm.length === 0 && json.stderr.length > 0) ) {
+                return "<Compilation Error>\n" + json.stderr.map(l => l.text).join('\n');
+            }
+            else {
+                return json.asm.map(a => a.text).join('\n'); 
+            }
         });
 
         return fetchPromise;
