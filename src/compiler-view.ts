@@ -27,20 +27,25 @@ export default class CompilerView {
 
     activate(context: vscode.ExtensionContext) {
         vscode.window.onDidChangeActiveTextEditor(editor => {
-            vscode.commands.executeCommand('compiler-explorer.updateDisassembly');
+            if( this.currentSourceEditor && this.currentMnemonicsEditor &&
+                editor.document !== this.currentSourceEditor.document &&
+                editor.document !== this.currentMnemonicsEditor.document ) {
+                this.clearSyntaxHighlighting();
+                vscode.commands.executeCommand('compiler-explorer.updateDisassembly');
+            }
         });
 
         // vscode.window.onDidChangeTextEditorVisibleRanges(editor => {
         //     // Scroll in assembly.
         // });
     
-        vscode.window.onDidChangeTextEditorSelection((event: vscode.TextEditorSelectionChangeEvent) => {
-            this.syntaxHighlightMnemonics();
-
+        vscode.window.onDidChangeTextEditorSelection((event: vscode.TextEditorSelectionChangeEvent) => {            
             if( !this.currentSourceEditor ) {
                 return;
             }
-
+            
+            this.syntaxHighlightMnemonics();
+            
             if( event.textEditor.document === this.currentSourceEditor.document ) {
                 // Update highlighted lines.
                 this.clearHighlightedLines();
@@ -89,8 +94,6 @@ export default class CompilerView {
         if( !this.canShowCompilerExplorer() ) {
             return;
         }
-        this.currentMnemonicsDecorations = [];
-        this.currentLabels = [];
 
         this.clearSyntaxHighlighting();
         this.clearHighlightedLines();
@@ -107,6 +110,7 @@ export default class CompilerView {
 
     private setCurrentSourceEditor(editor: vscode.TextEditor) {
         this.currentSourceEditor = editor;
+        this.clearHighlightedLines();
     }
 
     private canShowCompilerExplorer() : boolean {
@@ -123,11 +127,11 @@ export default class CompilerView {
     }
 
     private getBaseMnemonicsDecorations() : Array<DecorationSpecification> {
-        if( this.currentMnemonicsDecorations.length == 0 ) {
+        //if( this.currentMnemonicsDecorations.length == 0 ) {
             this.currentMnemonicsDecorations = getSyntaxHighlightDecorations(
                 this.currentMnemonicsEditor, this.currentMnemonicsEditor.document.getText(), this.getCurrentLabels()
             );
-        }
+        //}
 
         return this.currentMnemonicsDecorations.slice(0);
     }
@@ -176,14 +180,19 @@ export default class CompilerView {
     }
 
     private clearSyntaxHighlighting() {
+        if( !this.currentMnemonicsEditor ) {
+            return;
+        }
         let clearedSyntaxTypes = getSyntaxHighlightDecorationTypes();
-        for( let type of clearedSyntaxTypes ) {
-            this.currentMnemonicsEditor.setDecorations(type, []);
+        for( let type of Object.keys(clearedSyntaxTypes) ) {
+            this.currentMnemonicsEditor.setDecorations(clearedSyntaxTypes[type], []);
         }
     }
 
     private clearHighlightedLines() {
         if( this.currentMnemonicsEditor ) {
+            this.currentLabels = [];
+            this.currentMnemonicsDecorations = [];
             this.currentMnemonicsEditor.setDecorations(highlightDecorationType, []);
         }
         if( this.currentSourceEditor ) {

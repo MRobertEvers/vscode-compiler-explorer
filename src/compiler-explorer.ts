@@ -112,6 +112,8 @@ export default class CompilerExplorer {
         const compiler = getCompilerCode();
         const options = this.getCompileAPIOptions(this.getCompileAPIUserOptions());
 
+        this.currentData = null;
+
         let fetchPromise = fetch(`${apiHost}/api/compiler/${compiler}/compile`, {
             method: 'POST',
             compress: true,
