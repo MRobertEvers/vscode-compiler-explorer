@@ -9,6 +9,25 @@ Compiler Explorer Github: https://github.com/mattgodbolt/compiler-explorer
 
 ## Usage 
 
+The default settings are enough to get started. Simply create a `test.c` file like below
+
+```c
+int square(int num) {
+    return num * num;
+}
+
+int main() {
+    int i = 0;
+    return square(i);
+}
+```
+
+Then open the compiler explorer extension; `Ctrl + shift + p`, then search `compiler-explorer` to open the compiler explorer.
+
+The default settings are to use GCC 9.2.0 from `https://godbolt.org` with high optimizations `-O3`. The output you will see is x86.
+
+### Advanced Usage
+
 This extension does not compile your code itself. It uses the Compiler Explorer API to do so (https://github.com/mattgodbolt/compiler-explorer/blob/master/docs/API.md).
 
 You need to specify what compiler and compiler options you want to include in the API call.
@@ -57,15 +76,15 @@ arm710                    | ARM gcc 7.2.1 (none)
 
 ## Current Restrictions
 
-I haven't done any validation for anything other than C/C++; currently the extension checks you are exiting those two languages.
+I haven't done any validation for anything other than C/C++; currently the extension checks you are using those two languages.
 
-In order to use the `compiler-explorer.include` option, you must host the compiler explorer yourself (e.g. Locally) and enable the `-I` command line argument.
+In order to use the `compiler-explorer.include` option, you must host the compiler explorer yourself (e.g. Locally) and enable the `-I` command line argument. Please see the compiler explorer github for instructions.
 
 E.g. On your local instance of compiler explorer, open the config `compiler-explorer.defaults.properties`, and change the `optionsBlacklistRe=` regular expression to NOT match `-I`.
 
 ## Current Bugs
 
-Lots. Has issues when editing multiple files; Syntax highlight is bugged when switching files.
+Syntax Highlighting has issues.
 
 ## Todo
 
