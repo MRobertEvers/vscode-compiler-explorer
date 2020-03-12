@@ -2,7 +2,7 @@
     "name": "compiler-explorer",
     "displayName": "Compiler Explorer",
     "description": "Use Compiler Explorer in VSCode",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "publisher": "MatthewEvers",
     "license": "MIT",
     "homepage": "https://github.com/MRobertEvers/vscode-compiler-explorer.git",

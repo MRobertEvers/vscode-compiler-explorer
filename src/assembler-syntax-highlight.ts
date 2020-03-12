@@ -87,32 +87,20 @@ function tokenize(sourceCode: string, labels?: Array<GodboltLabel[]>) : Array<To
     return res;
 } 
 
-let tmp = {
-    // borderWidth: '1px',
-    // borderStyle: 'solid',
-    // overviewRulerColor: 'blue',
-}
-
-function toColor(num: number) : vscode.Color {
-    const b = num & 0xFF;
-    const g = (num & 0xFF00) >>> 8;
-    const r = (num & 0xFF0000) >>> 16;
-    const a = ( (num & 0xFF000000) >>> 24 ) / 255;
-    return new vscode.Color(r, g, b, a);
-}
+let baseDecoration = {};
 
 const typeMap = {
     'String': vscode.window.createTextEditorDecorationType({
-        ...tmp,
+        ...baseDecoration,
         color: '#c39178'
         
     }),
     'Args': vscode.window.createTextEditorDecorationType({
-        ...tmp,
+        ...baseDecoration,
         color: '#9cdcda'
     }),
     'LabelArg': vscode.window.createTextEditorDecorationType({
-        ...tmp,
+        ...baseDecoration,
         color: '#2a8081',
         fontStyle: 'italic',
         // borderWidth: '1px',
@@ -120,16 +108,16 @@ const typeMap = {
         // borderStyle: 'solid'
     }),
     'Comment': vscode.window.createTextEditorDecorationType({
-        ...tmp,
+        ...baseDecoration,
         color: '#438a55'
         
     }),
     'Mnemonic': vscode.window.createTextEditorDecorationType({
-        ...tmp,
+        ...baseDecoration,
         color: '#3e9cd6'
     }),
     'Label': vscode.window.createTextEditorDecorationType({
-        ...tmp,
+        ...baseDecoration,
         color:  '#2a8081'
     }),
 }

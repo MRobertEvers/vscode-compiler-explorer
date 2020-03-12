@@ -12,7 +12,7 @@ const highlightDecorationType: vscode.TextEditorDecorationType = vscode.window.c
     overviewRulerColor: 'blue',
     overviewRulerLane: vscode.OverviewRulerLane.Full,
     // this color will be used in dark color themes
-    backgroundColor: '#373737',
+    backgroundColor: new vscode.ThemeColor('editor.findMatchHighlightBackground'),
     borderColor: '#373737'
 });
 
