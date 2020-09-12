@@ -100,7 +100,7 @@
     },
     "dependencies": {
         "node": "^12.16.1",
-        "node-fetch": "^2.6.0"
+        "node-fetch": "^2.6.1"
     },
     "devDependencies": {
         "@types/node": "^12.12.14",
