@@ -4,6 +4,8 @@ import CompilerExplorer from './compiler-explorer';
 import CompilerExplorerSourceProvider from './compiler-source-provider';
 import { GodboltLabel } from './compiler-explorer-types';
 import {getSyntaxHighlightDecorations, DecorationSpecification, getSyntaxHighlightDecorationTypes} from './assembler-syntax-highlight';
+import { getCompilerExplorerHost } from './config';
+import fetch from 'node-fetch';
 
 const highlightDecorationType: vscode.TextEditorDecorationType = vscode.window.createTextEditorDecorationType({
     borderWidth: '1px',
@@ -25,6 +27,7 @@ export default class CompilerView {
     private compilerExplorer: CompilerExplorer = new CompilerExplorer();
     private compilerSourceProvider: CompilerExplorerSourceProvider = new CompilerExplorerSourceProvider(this.compilerExplorer);
 
+    private supportedCompilers = this.getSupportedCompilers();
     activate(context: vscode.ExtensionContext) {
         vscode.window.onDidChangeActiveTextEditor(editor => {
             if( this.currentSourceEditor && this.currentMnemonicsEditor &&
@@ -117,13 +120,24 @@ export default class CompilerView {
         if( !vscode.window.activeTextEditor ) {
 			return false; // no editor
         }
-        
         const lang: string = vscode.window.activeTextEditor.document.languageId;
-        if( lang !== 'c' && lang !== 'c++' && lang !== 'cpp' ) {
-            return false;
+        if( lang == 'c' || lang == 'c++' || lang == 'cpp' ) {
+            return true;
         }
-
-        return true;
+        else if(lang == 'python'){
+            return true;
+        }
+        else if(lang == 'java'){
+            return true;
+        }
+        this.supportedCompilers.then(res => {
+            if(res.includes(lang)){
+                return true;
+            }
+          });
+        //if some language is completely unsupported return false
+        //for now this will always return true to enable the default lang usage
+        return false;
     }
 
     private getBaseMnemonicsDecorations() : Array<DecorationSpecification> {
@@ -233,4 +247,19 @@ export default class CompilerView {
 
         this.currentSourceEditor.setDecorations(highlightDecorationType, highlightDecorations);
     }
+    async getSupportedCompilers(){
+        const apiHost = getCompilerExplorerHost();
+        return await (await fetch(`${apiHost}/api/compilers`)).text();
+    }
+    /*
+    private getLanguageIdentifier(lang : string) : string {
+        switch (lang) {
+            case 'go':
+                return 'gc';
+            case 'java':
+                return 'jdk'
+            default:
+                break;
+        }
+    }*/
 }
