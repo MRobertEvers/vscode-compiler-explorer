@@ -35,8 +35,8 @@ You need to specify what compiler and compiler options you want to include in th
 ```
 {
     "compiler-explorer.url": "https://godbolt.org", // url of the compiler explorer you want to use.
-    "compiler-explorer.compiler": "carmg820", // Compiler code - See help below.
-    "compiler-explorer.options": "-O3", // Compiler options
+    "compiler-explorer.compilerDefault": "carmg820", // Compiler code - See help below.
+    "compiler-explorer.optionsDefault": "-O3", // Compiler options
     "compiler-explorer.debug": true, // true indicates that the extension will print debug to its output channel.
     "compiler-explorer.include": [<filepaths>]
 }
@@ -76,7 +76,10 @@ arm710                    | ARM gcc 7.2.1 (none)
 
 ## Current Restrictions
 
-I haven't done any validation for anything other than C/C++; currently the extension checks you are using those two languages.
+I haven't done any validation for anything other than C/C++.
+Currently the extension checks you are using C/C++, Java, Python.
+It also allows you to use a custom language as long as it is supported at `https://godbolt.org`
+To use a custom language please set the appropriate compiler in the default compiler setting.
 
 In order to use the `compiler-explorer.include` option, you must host the compiler explorer yourself (e.g. Locally) and enable the `-I` command line argument. Please see the compiler explorer github for instructions.
 

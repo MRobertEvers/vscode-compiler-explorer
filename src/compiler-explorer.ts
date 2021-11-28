@@ -59,8 +59,8 @@ export default class CompilerExplorer {
         }
     }
 
-    getCompileAPIUserOptions() : string {
-        let options = [getCompilerOptions()];
+    getCompileAPIUserOptions(lang : string) : string {
+        let options = [getCompilerOptions(lang)];
         let additionalIncludes = getCompilerIncludes().map((inc: string) => { 
             let sanitized = inc.replace(/\\/g, '/');
             return `-I "${sanitized}"`; 
@@ -109,17 +109,17 @@ export default class CompilerExplorer {
     async compile(language: string, source: string) {
         logger.debug("Fetching Compilation");
         const apiHost = getCompilerExplorerHost();
-        const compiler = getCompilerCode();
-        const options = this.getCompileAPIOptions(this.getCompileAPIUserOptions());
+        const compiler = getCompilerCode(language);
+        const options = this.getCompileAPIOptions(this.getCompileAPIUserOptions(language));
 
         this.currentData = null;
-
+        
         let fetchPromise = fetch(`${apiHost}/api/compiler/${compiler}/compile`, {
             method: 'POST',
             compress: true,
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json,  text/javascript, */*'
             },
             body: JSON.stringify({
                 source: source,
@@ -133,6 +133,7 @@ export default class CompilerExplorer {
             return res.json(); 
         })
         .then((json: CompilerExplorerResponse) => { 
+            console.log(json);
             this.currentData = json;
             this.logOutput(json);
 

@@ -44,13 +44,31 @@
                     "description": "URL of compiler explorer.",
                     "scope": "window"
                 },
-                "compiler-explorer.compiler": {
+                "compiler-explorer.compilerDefault": {
                     "type": "string",
                     "default": "g92",
-                    "description": "Compiler code to use. See GET /api/compilers",
+                    "description": "Compiler code to use for unchecked file types",
                     "scope": "window"
                 },
-                "compiler-explorer.options": {
+                "compiler-explorer.compilerCpp": {
+                    "type": "string",
+                    "default": "g92",
+                    "description": "Compiler code to use for c/c++ files",
+                    "scope": "window"
+                },
+                "compiler-explorer.compilerPython": {
+                    "type": "string",
+                    "default": "python39",
+                    "description": "Compiler code to use for python files",
+                    "scope": "window"
+                },
+                "compiler-explorer.compilerJava": {
+                    "type": "string",
+                    "default": "java1102",
+                    "description": "Compiler code to use for java files",
+                    "scope": "window"
+                },
+                "compiler-explorer.optionsCpp": {
                     "type": [
                         "array",
                         "string"
@@ -60,6 +78,48 @@
                     },
                     "default": [
                         "-O3"
+                    ],
+                    "description": "Compiler options.",
+                    "scope": "window"
+                },
+                "compiler-explorer.optionsJava": {
+                    "type": [
+                        "array",
+                        "string"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        ""
+                    ],
+                    "description": "Compiler options.",
+                    "scope": "window"
+                },
+                "compiler-explorer.optionsPython": {
+                    "type": [
+                        "array",
+                        "string"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        ""
+                    ],
+                    "description": "Compiler options.",
+                    "scope": "window"
+                },
+                "compiler-explorer.optionsDefault": {
+                    "type": [
+                        "array",
+                        "string"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        ""
                     ],
                     "description": "Compiler options.",
                     "scope": "window"
@@ -112,6 +172,6 @@
         "typescript": "^3.8.3",
         "vsce": "^1.74.0",
         "webpack": "^4.41.6",
-        "webpack-cli": "^3.3.11"
+        "webpack-cli": "^3.3.12"
     }
 }
